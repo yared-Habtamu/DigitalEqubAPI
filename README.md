@@ -1,4 +1,4 @@
-# Digital Equb - Rotating Savings & Credit Association (ROSCA) Platform
+# Digital Equb 
 
 
 A Django REST API backend for managing digital rotating savings groups (Equb/Ekub), with features for group management, payment tracking, and automated payout rotation.
