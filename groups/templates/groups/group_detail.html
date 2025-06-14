@@ -1,0 +1,49 @@
+<!-- At the bottom of the file, before </body> -->
+
+<div id="payout-status"></div>
+
+<!-- Simple CSS for the alert -->
+<style>
+.alert {
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+}
+</style>
+<script>
+// 1. Get group ID from Django template variable
+const groupId = {{ group.id|safe }};  // Make sure your view passes 'group' in context
+
+// 2. Establish WebSocket connection
+const socket = new WebSocket(
+  `ws://${window.location.host}/ws/payouts/${groupId}/`  // Matches your URL routing
+);
+
+// 3. Handle incoming payout notifications
+socket.onmessage = function(event) {
+  const data = JSON.parse(event.data);
+
+  // Update UI without page reload
+  document.getElementById('payout-status').innerHTML = `
+    <div class="alert alert-success">
+      ${data.recipient} received ${data.amount} ETB!
+    </div>
+  `;
+
+  // Optional: Play sound
+  new Audio('/static/sounds/notification.mp3').play();
+};
+
+// 4. Error handling
+socket.onerror = function(error) {
+  console.error("WebSocket Error:", error);
+};
+
+socket.onclose = function() {
+  console.log("Disconnected - refresh page to reconnect");
+};
+</script>

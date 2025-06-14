@@ -1,0 +1,22 @@
+<!-- templates/equb_group.html -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const groupId = {{ group.id|json_script }};  // Passed from Django view
+
+  const socket = new WebSocket(
+    `ws://${window.location.host}/ws/payouts/${groupId}/`
+  );
+
+  socket.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    if (data.type === 'payout') {
+      alert(`${data.recipient} received $${data.amount}`);
+      // Or update DOM directly
+      document.getElementById('payout-alert').innerText =
+        `New payout to ${data.recipient}`;
+    }
+  };
+
+  window.onbeforeunload = () => socket.close();
+});
+</script>
