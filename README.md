@@ -30,7 +30,7 @@ A Django REST API backend for managing digital rotating savings groups (Equb/Eku
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/digital-equb.git
+   git clone https://github.com/yared-Habtamu/DigitalEqubAPI
    cd digital-equb
 
 
